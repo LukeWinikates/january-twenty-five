@@ -1,8 +1,10 @@
 package main
 
 import (
+	"LukeWinikates/january-twenty-five/lib/payloads"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"log"
 	"os"
 	"time"
 )
@@ -27,6 +29,7 @@ func sub(client mqtt.Client) {
 	token.Wait()
 	fmt.Printf("Subscribed to topic %s", topic)
 }
+
 func main() {
 	//mqtt.ERROR = log.New(os.Stdout, "[ERROR] ", 0)
 	//mqtt.CRITICAL = log.New(os.Stdout, "[CRIT] ", 0)
@@ -37,16 +40,52 @@ func main() {
 	options.AddBroker(os.Getenv("MQTT_HOST"))
 	options.SetClientID("hogepiyo")
 	client := mqtt.NewClient(options)
-	options.SetDefaultPublishHandler(messagePubHandler)
+	//options.SetDefaultPublishHandler(messagePubHandler)
 	options.OnConnect = connectHandler
 	options.OnConnectionLost = connectLostHandler
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-	sub(client)
+	subscribeDevices(client)
+	//subscribeLogging(client)
+	//sub(client)
 
 	for {
 		time.Sleep(20 * time.Second)
 	}
 	//client.Disconnect(2500)
 }
+
+func subscribeDevices(client mqtt.Client) {
+	topic := "zigbee2mqtt/bridge/devices"
+	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
+		fmt.Printf("Received message from topic: %s\n", message.Topic())
+		//err := os.WriteFile("devices.json", message.Payload(), os.ModePerm)
+		//if err != nil {
+		//	log.Default().Printf("err: %s", err.Error())
+		//}
+		deviceList, err := payloads.Parse(message.Payload())
+		if err != nil {
+			log.Default().Printf("err: %s", err.Error())
+			return
+		}
+		for _, device := range deviceList {
+			fmt.Println(device.FriendlyName)
+		}
+	})
+	token.Wait()
+	fmt.Printf("Subscribed to topic %s", topic)
+}
+
+//func subscribeLogging(client mqtt.Client) {
+//	topic := "zigbee2mqtt/bridge/logging"
+//	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
+//		//fmt.Printf("Received message from topic: %s\n", message.Topic())
+//		////err := os.WriteFile("devices.json", message.Payload(), os.ModePerm)
+//		//if err != nil {
+//		//	log.Default().Printf("err: %s", err.Error())
+//		//}
+//	})
+//	token.Wait()
+//	fmt.Printf("Subscribed to topic %s", topic)
+//}

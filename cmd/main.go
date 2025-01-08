@@ -1,7 +1,9 @@
 package main
 
 import (
+	"LukeWinikates/january-twenty-five/lib/devices"
 	"LukeWinikates/january-twenty-five/lib/payloads"
+	"encoding/json"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
@@ -47,13 +49,28 @@ func main() {
 		panic(token.Error())
 	}
 	subscribeDevices(client)
-	//subscribeLogging(client)
+	subscribeLightSignal(client)
 	//sub(client)
+
+	turnOnLight(client, os.Getenv("TEST_DEVICE_NAME"))
 
 	for {
 		time.Sleep(20 * time.Second)
 	}
 	//client.Disconnect(2500)
+}
+
+func turnOnLight(client mqtt.Client, deviceName string) {
+	message, err := json.Marshal(devices.OnMessage())
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	topic := fmt.Sprintf("zigbee2mqtt/%s/set", deviceName)
+	publish := client.Publish(topic, 0, false, message)
+	if publish.Error() != nil {
+		fmt.Println(publish.Error().Error())
+	}
 }
 
 func subscribeDevices(client mqtt.Client) {
@@ -72,6 +89,15 @@ func subscribeDevices(client mqtt.Client) {
 		for _, device := range deviceList {
 			fmt.Println(device.FriendlyName)
 		}
+	})
+	token.Wait()
+	fmt.Printf("Subscribed to topic %s", topic)
+}
+func subscribeLightSignal(client mqtt.Client) {
+	topic := "zigbee2mqtt/Office Work Desk/set"
+	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
+		fmt.Printf("Received message: %s from topic: %s\n", message.Payload(), message.Topic())
+		fmt.Printf("%v", message)
 	})
 	token.Wait()
 	fmt.Printf("Subscribed to topic %s", topic)

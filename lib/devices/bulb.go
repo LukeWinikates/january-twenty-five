@@ -21,8 +21,6 @@ type LightControl struct {
 	UpdateAvailable bool        `json:"update_available"`
 }
 
-//
-
 func OnMessage() LightControl {
 	return LightControl{
 		Brightness: 254,

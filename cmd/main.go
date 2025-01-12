@@ -1,9 +1,9 @@
 package main
 
 import (
-	"LukeWinikates/january-twenty-five/lib/devices"
-	"LukeWinikates/january-twenty-five/lib/payloads"
 	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt"
+	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/devices"
+	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/payloads"
 	"fmt"
 	"os"
 	"time"

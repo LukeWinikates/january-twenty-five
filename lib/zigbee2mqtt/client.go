@@ -1,46 +1,19 @@
 package zigbee2mqtt
 
 import (
-	"LukeWinikates/january-twenty-five/lib/devices"
-	"LukeWinikates/january-twenty-five/lib/payloads"
+	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/devices"
+	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/payloads"
 	"encoding/json"
 	"fmt"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"log"
+	"os"
 )
 
 func init() {
-	//mqtt.ERROR = log.New(os.Stdout, "[ERROR] ", 0)
-	//mqtt.CRITICAL = log.New(os.Stdout, "[CRIT] ", 0)
-	//mqtt.WARN = log.New(os.Stdout, "[WARN]  ", 0)
-	//mqtt.DEBUG = log.New(os.Stdout, "[DEBUG] ", 0)
-}
-
-func subscribeLightSignal(client mqtt.Client) {
-	topic := "zigbee2mqtt/Office Work Desk/set"
-	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
-		fmt.Printf("Received message: %s from topic: %s\n", message.Payload(), message.Topic())
-		fmt.Printf("%v", message)
-	})
-	token.Wait()
-	fmt.Printf("Subscribed to topic %s", topic)
-}
-
-//func subscribeLogging(client mqtt.Client) {
-//	topic := "zigbee2mqtt/bridge/logging"
-//	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
-//		//fmt.Printf("Received message from topic: %s\n", message.Topic())
-//		////err := os.WriteFile("devices.json", message.Payload(), os.ModePerm)
-//		//if err != nil {
-//		//	log.Default().Printf("err: %s", err.Error())
-//		//}
-//	})
-//	token.Wait()
-//	fmt.Printf("Subscribed to topic %s", topic)
-//}
-
-var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
+	mqtt.ERROR = log.New(os.Stdout, "[ERROR] ", 0)
+	mqtt.CRITICAL = log.New(os.Stdout, "[CRIT] ", 0)
+	mqtt.WARN = log.New(os.Stdout, "[WARN]  ", 0)
 }
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
@@ -49,15 +22,6 @@ var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
 
 var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
 	fmt.Printf("Connect lost: %v", err)
-}
-
-func sub(client mqtt.Client) {
-	topic := "zigbee2mqtt/bridge/#"
-	token := client.Subscribe(topic, 1, func(client mqtt.Client, message mqtt.Message) {
-		fmt.Printf("Received message: %s from topic: %s\n", message.Payload(), message.Topic())
-	})
-	token.Wait()
-	fmt.Printf("Subscribed to topic %s", topic)
 }
 
 type Client interface {

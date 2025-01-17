@@ -1,0 +1,21 @@
+<html lang="en-US">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <title>Housesitter for Zigbee2MQTT</title>
+</head>
+<body>
+<h1>
+    Housesitter for Zigbee2MQTT
+</h1>
+<section>
+    <article class="schedule-box">
+        <ul>
+            {{ range . }}
+                <li>{{ .FriendlyName }}</li>
+            {{ end }}
+        </ul>
+    </article>
+</section>
+</body>
+</html>

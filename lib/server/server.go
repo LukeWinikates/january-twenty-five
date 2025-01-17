@@ -17,7 +17,9 @@ type realServer struct {
 }
 
 func (r *realServer) Start() {
-	// initialize database
+	go func() {
+		r.httpServer.Serve(":8998")
+	}()
 	// start device listener
 }
 
@@ -27,7 +29,8 @@ func (r *realServer) Stop() error {
 
 func New(client zigbee2mqtt.Client, dataDir string) (Server, error) {
 	return &realServer{
-		client:  client,
-		dataDir: dataDir,
+		client:     client,
+		dataDir:    dataDir,
+		httpServer: http.NewServer(),
 	}, nil
 }

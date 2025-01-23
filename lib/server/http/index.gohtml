@@ -3,19 +3,28 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width"/>
     <title>Housesitter for Zigbee2MQTT</title>
+    <link href="/public/main.css" rel="stylesheet">
 </head>
 <body>
+
+
 <h1>
     Housesitter for Zigbee2MQTT
 </h1>
 <section>
     <article class="schedule-box">
-        <ul>
-            {{ range . }}
-                <li>{{ .FriendlyName }}</li>
-            {{ end }}
-        </ul>
+        <div class='header'><span></span><span/><span/><span/><span/><span/><span/><span/></div>
+        {{ range .Devices }}
+            <div class="{{ .DisplayClasses }}"
+                    {{ .InlineStyles }}>
+                {{ .Device.FriendlyName }}
+            </div>
+        {{ end }}
     </article>
 </section>
 </body>
 </html>
+
+{{/*  // todo: float a regular grid and legend for the lines, showing 5am to 12pm by default
+  // each device has its own distictive color and texture
+  // device types have an icon*/}}

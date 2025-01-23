@@ -1,0 +1,34 @@
+.schedule-box {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(48, 1fr);
+}
+
+.schedule-box .device {
+    border: 1px dotted black;
+    text-align:center;
+}
+
+.header {
+    grid-row-start: 1;
+    grid-column-end: 48;
+    height: 20px;
+}
+
+.header span {
+    height: 100%;
+    border: 1px solid black;
+}
+
+/*.device-1 {*/
+/*    grid-row-start: 2;*/
+/*    grid-column-start: 12;*/
+/*    grid-column-end: 25;*/
+/*}*/
+
+
+/*.device-2 {*/
+/*    grid-row-start: 3;*/
+/*    grid-column-start: 10;*/
+/*    grid-column-end: 34;*/
+/*}*/

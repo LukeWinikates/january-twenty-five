@@ -1,0 +1,5 @@
+[build]
+cmd = "go run cmd/main.go"
+#bin = "bin/server"
+#exclude_dir = ["web", "data","node_modules"]
+include_file=["lib/server/http/index.gohtml"]

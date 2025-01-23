@@ -18,7 +18,7 @@ type realServer struct {
 
 func (r *realServer) Start() {
 	go func() {
-		r.httpServer.Serve(":8998")
+		panic(r.httpServer.Serve(":8998"))
 	}()
 	// start device listener
 }

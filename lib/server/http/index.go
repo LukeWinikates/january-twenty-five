@@ -46,7 +46,14 @@ type GridDevice struct {
 }
 
 func (g GridDevice) InlineStyles() template.HTMLAttr {
-	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start: 1; grid-column-end: 24\"", g.RowNumber+1))
+	onTime := g.Device.Schedules[0].OnTime   // time in seconds
+	offTime := g.Device.Schedules[0].OffTime // time in seconds
+	// to column means -> 86400 second, divided by grid size 48
+	columnSize := 86400 / 48
+	// number of seconds as a half-hour
+	startColumn := int(onTime) / columnSize
+	endColumn := int(offTime) / columnSize
+	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:%v ; grid-column-end: %v\"", g.RowNumber+1, startColumn, endColumn))
 }
 
 type ViewGrid struct {

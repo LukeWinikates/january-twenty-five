@@ -16,7 +16,11 @@
 {{/*TODO: header with date/time legend */}}
 <section>
     <article class="schedule-box">
-        <div class='header'><span></span><span/><span/><span/><span/><span/><span/><span/></div>
+        {{ range .Legends }}
+            <div class="{{.DisplayClasses }}">
+                {{ .Title }}
+            </div>
+        {{ end }}
         {{ range .Devices }}
             <div class="{{ .DisplayClasses }}"
                     {{ .InlineStyles }}>

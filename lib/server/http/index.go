@@ -56,8 +56,15 @@ func (g GridDevice) InlineStyles() template.HTMLAttr {
 	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:%v ; grid-column-end: %v\"", g.RowNumber+1, startColumn, endColumn))
 }
 
+type Legend struct {
+	DisplayClasses string
+	Style          template.HTMLAttr
+	Title          string
+}
+
 type ViewGrid struct {
 	Devices     []GridDevice
+	Legends     []Legend
 	GridClasses string
 }
 
@@ -71,8 +78,18 @@ func grid(list []*schedule.Device) ViewGrid {
 		}
 	}
 
+	var legends = make([]Legend, 48)
+
+	for i := 0; i < 48; i++ {
+		legends[i] = Legend{
+			DisplayClasses: "",
+			Style:          template.HTMLAttr(fmt.Sprintf("style=\"grid-column-start:%d\"")),
+			Title:          fmt.Sprintf("%d", i),
+		}
+	}
 	return ViewGrid{
 		Devices:     gridDevices,
+		Legends:     legends,
 		GridClasses: "",
 	}
 }

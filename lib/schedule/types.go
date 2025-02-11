@@ -23,6 +23,17 @@ const PM = 12 * Hour
 
 type SecondsInDay int
 
+func (s SecondsInDay) HumanReadble() string {
+	ampm := "am"
+	if s > PM {
+		s -= PM
+		ampm = "pm"
+	}
+	hour := s / Hour
+	minute := s % Hour
+	return fmt.Sprintf("%02d:%02d %s", hour, minute, ampm)
+}
+
 func ToFriendlyTime(seconds SecondsInDay) string {
 	duration, err := time.ParseDuration(fmt.Sprintf("%vs", seconds))
 	if err != nil {

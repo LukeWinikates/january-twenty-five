@@ -1,5 +1,6 @@
 [build]
-cmd = "go run cmd/main.go"
-#bin = "bin/server"
+cmd = "go build -o bin/server cmd/main.go"
+bin = "bin/server"
 #exclude_dir = ["web", "data","node_modules"]
-include_file=["lib/server/http/index.gohtml"]
+#include_dir=["lib"]
+include_file=["lib/server/http/index.gohtml", ".air.toml"]

@@ -3,36 +3,36 @@ package main
 import (
 	"LukeWinikates/january-twenty-five/lib/server"
 	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt"
-	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/devices"
-	"LukeWinikates/january-twenty-five/lib/zigbee2mqtt/payloads"
 	"fmt"
 	"log"
 	"os"
-	"time"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
-	// start the server
-	// on each client message, update the device list
-	// table for schedule entries
-
-	client := zigbee2mqtt.NewClient(os.Getenv("MQTT_HOST"))
-	dataPath := os.Getenv("DATA_PATH")
-	s, err := server.New(client, dataPath)
+	s, err := createServer()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	s.Start()
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGKILL, syscall.SIGTERM)
 
-	client.SubscribeDeviceCatalog(func(devices []payloads.MessagePayload) {
-		for _, device := range devices {
-			fmt.Println(device.FriendlyName)
-		}
-	})
+	go func() {
+		sig := <-sigs
+		fmt.Printf("received signal: %s\n", sig.String())
+		fmt.Println(s.Stop())
+	}()
 
-	client.SetDeviceState(os.Getenv("TEST_DEVICE_NAME"), devices.OnMessage())
+	fmt.Println("starting server")
+	fmt.Println(s.Start())
 
-	for {
-		time.Sleep(20 * time.Second)
-	}
+}
+
+func createServer() (server.Server, error) {
+	//client := zigbee2mqtt.NewClient(os.Getenv("MQTT_HOST"))
+	client := zigbee2mqtt.NoOpClient()
+	dataPath := os.Getenv("DATA_PATH")
+	s, err := server.New(client, dataPath)
+	return s, err
 }

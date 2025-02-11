@@ -2,6 +2,7 @@
     border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(48, 1fr);
+    grid-gap: 2px;
 }
 
 .schedule-box .device {
@@ -18,6 +19,10 @@
 .header span {
     height: 100%;
     border: 1px solid black;
+}
+
+.legend {
+    text-align:center;
 }
 
 .blue {

@@ -39,21 +39,36 @@ func indexPage() func(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+type Schedule struct {
+	OnTime  schedule.SecondsInDay
+	OffTime schedule.SecondsInDay
+	Row     int
+}
+
 type GridDevice struct {
 	RowNumber      int
 	DisplayClasses string
-	Device         schedule.Device
+	Schedules      []Schedule
+	FriendlyName   string
 }
 
-func (g GridDevice) InlineStyles() template.HTMLAttr {
-	onTime := g.Device.Schedules[0].OnTime   // time in seconds
-	offTime := g.Device.Schedules[0].OffTime // time in seconds
+func (gd GridDevice) InlineStyles() template.HTMLAttr {
+	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:1 ; grid-column-end: 1\"", gd.RowNumber+1))
+}
+
+func (s Schedule) Title() string {
+	return fmt.Sprintf("%s - %s", s.OnTime.HumanReadble(), s.OffTime.HumanReadble())
+}
+
+func (s Schedule) InlineStyles() template.HTMLAttr {
+	onTime := s.OnTime   // time in seconds
+	offTime := s.OffTime // time in seconds
 	// to column means -> 86400 second, divided by grid size 48
 	columnSize := 86400 / 48
 	// number of seconds as a half-hour
 	startColumn := int(onTime) / columnSize
 	endColumn := int(offTime) / columnSize
-	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:%v ; grid-column-end: %v\"", g.RowNumber+1, startColumn, endColumn))
+	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:%v ; grid-column-end: %v\"", s.Row+1, startColumn, endColumn))
 }
 
 type Legend struct {
@@ -71,20 +86,30 @@ type ViewGrid struct {
 func grid(list []*schedule.Device) ViewGrid {
 	gridDevices := make([]GridDevice, len(list))
 	for i, device := range list {
+		schedules := displaySchedules(device.Schedules, i+1)
 		gridDevices[i] = GridDevice{
 			RowNumber:      i + 1,
 			DisplayClasses: "blue",
-			Device:         *device,
+			Schedules:      schedules,
+			FriendlyName:   device.FriendlyName,
 		}
 	}
 
 	var legends = make([]Legend, 48)
 
 	for i := 0; i < 48; i++ {
+		title := ""
+		if i%2 == 0 {
+			hour := i / 2 % 12
+			if hour == 0 {
+				hour = 12
+			}
+			title = fmt.Sprintf("%d", hour)
+		}
 		legends[i] = Legend{
-			DisplayClasses: "",
-			Style:          template.HTMLAttr(fmt.Sprintf("style=\"grid-column-start:%d\"")),
-			Title:          fmt.Sprintf("%d", i),
+			DisplayClasses: "legend",
+			Style:          template.HTMLAttr(fmt.Sprintf("style=\"grid-column-start:%d\"", i+1)),
+			Title:          title,
 		}
 	}
 	return ViewGrid{
@@ -92,4 +117,16 @@ func grid(list []*schedule.Device) ViewGrid {
 		Legends:     legends,
 		GridClasses: "",
 	}
+}
+
+func displaySchedules(schedules []*schedule.DeviceSchedule, row int) []Schedule {
+	var result []Schedule
+	for _, deviceSchedule := range schedules {
+		result = append(result, Schedule{
+			OnTime:  deviceSchedule.OnTime,
+			OffTime: deviceSchedule.OffTime,
+			Row:     row,
+		})
+	}
+	return result
 }

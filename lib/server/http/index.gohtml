@@ -7,7 +7,6 @@
 </head>
 <body>
 
-
 <h1>
     Housesitter for Zigbee2MQTT
 </h1>
@@ -23,9 +22,15 @@
         {{ end }}
         {{ range .Devices }}
             <div class="{{ .DisplayClasses }}"
-                    {{ .InlineStyles }}>
-                {{ .Device.FriendlyName }}
+                                        {{ .InlineStyles }}
+            >
+                    {{ .FriendlyName }}
             </div>
+            {{ range .Schedules}}
+                <div {{.InlineStyles }}>
+                    {{ .Title }}
+                </div>
+            {{ end }}
         {{ end }}
     </article>
 </section>

@@ -9,11 +9,13 @@ type DeviceSchedule struct {
 	OnTime     SecondsInDay
 	OffTime    SecondsInDay
 	Brightness uint8
+	ID         string
 }
 
 type Device struct {
 	FriendlyName string
 	Schedules    []*DeviceSchedule
+	ID           string
 }
 
 const Second = 1

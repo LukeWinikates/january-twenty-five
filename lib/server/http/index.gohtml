@@ -5,19 +5,21 @@
     <title>Housesitter for Zigbee2MQTT</title>
     <link href="/public/main.css" rel="stylesheet">
     <script>
-        function openpanel() {
-          const panel = document.querySelector("#panel");
-          panel.classList.toggle("hidden")
-          // panel.scrollIntoView()
-        }
+      function openpanel() {
+        const panel = document.querySelector("#panel");
+        panel.classList.toggle("hidden")
+        // panel.scrollIntoView()
+      }
     </script>
 </head>
 <body>
 
-<h1>
-    Housesitter for Zigbee2MQTT
-</h1>
-<section>
+<header>
+    <h1>
+        Housesitter for Zigbee2MQTT
+    </h1>
+</header>
+<section id="schedule-grid">
     <article class="schedule-box">
         {{ range .Legends }}
             <div class="{{.DisplayClasses }}" {{.Style}}>
@@ -26,9 +28,9 @@
         {{ end }}
         {{ range .Devices }}
             <div class="label chamfer"
-                                        {{ .InlineStyles }}
+                    {{ .InlineStyles }}
             >
-                    {{ .FriendlyName }}
+                {{ .FriendlyName }}
             </div>
             {{ range .Schedules}}
                 <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel()">

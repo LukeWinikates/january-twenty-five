@@ -1,5 +1,18 @@
 body {
   font-size: 18px;
+  font-family: system-ui;
+  margin: 10px;
+  background-color: darkslateblue;
+}
+
+header {
+  background-color: bisque;
+  padding: 0 10px;
+}
+
+#schedule-grid {
+  background-color: bisque;
+  padding: 4px;
 }
 
 .schedule-box {

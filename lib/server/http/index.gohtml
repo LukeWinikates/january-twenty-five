@@ -4,39 +4,42 @@
     <meta name="viewport" content="width=device-width"/>
     <title>Housesitter for Zigbee2MQTT</title>
     <link href="/public/main.css" rel="stylesheet">
+    <script>
+        function openpanel() {
+          const panel = document.querySelector("#panel");
+          panel.classList.toggle("hidden")
+          // panel.scrollIntoView()
+        }
+    </script>
 </head>
 <body>
 
 <h1>
     Housesitter for Zigbee2MQTT
 </h1>
-{{/*TODO: column on left for device name*/}}
-{{/*TODO: loop over each schedule start, show on/off time in the display using the friendly time*/}}
-{{/*TODO: header with date/time legend */}}
 <section>
     <article class="schedule-box">
         {{ range .Legends }}
-            <div class="{{.DisplayClasses }}">
+            <div class="{{.DisplayClasses }}" {{.Style}}>
                 {{ .Title }}
             </div>
         {{ end }}
         {{ range .Devices }}
-            <div class="{{ .DisplayClasses }}"
+            <div class="label chamfer"
                                         {{ .InlineStyles }}
             >
                     {{ .FriendlyName }}
             </div>
             {{ range .Schedules}}
-                <div {{.InlineStyles }}>
+                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel()">
                     {{ .Title }}
                 </div>
             {{ end }}
         {{ end }}
     </article>
 </section>
+<article id="panel" class="hidden">
+    <em>stuff here!</em>
+</article>
 </body>
 </html>
-
-{{/*  // todo: float a regular grid and legend for the lines, showing 5am to 12pm by default
-  // each device has its own distictive color and texture
-  // device types have an icon*/}}

@@ -66,9 +66,9 @@ func (s Schedule) InlineStyles() template.HTMLAttr {
 	// to column means -> 86400 second, divided by grid size 48
 	columnSize := 86400 / 48
 	// number of seconds as a half-hour
-	startColumn := int(onTime) / columnSize
-	endColumn := int(offTime) / columnSize
-	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:%v ; grid-column-end: %v\"", s.Row+1, startColumn, endColumn))
+	startColumn := 1 + (int(onTime) / columnSize)
+	endColumn := 1 + (int(offTime) / columnSize)
+	return template.HTMLAttr(fmt.Sprintf("style=\"grid-row-start: %v; grid-column-start:tick %v ; grid-column-end: tick %v\"", s.Row+1, startColumn, endColumn))
 }
 
 type Legend struct {
@@ -88,10 +88,9 @@ func grid(list []*schedule.Device) ViewGrid {
 	for i, device := range list {
 		schedules := displaySchedules(device.Schedules, i+1)
 		gridDevices[i] = GridDevice{
-			RowNumber:      i + 1,
-			DisplayClasses: "blue",
-			Schedules:      schedules,
-			FriendlyName:   device.FriendlyName,
+			RowNumber:    i + 1,
+			Schedules:    schedules,
+			FriendlyName: device.FriendlyName,
 		}
 	}
 
@@ -108,7 +107,7 @@ func grid(list []*schedule.Device) ViewGrid {
 		}
 		legends[i] = Legend{
 			DisplayClasses: "legend",
-			Style:          template.HTMLAttr(fmt.Sprintf("style=\"grid-column-start:%d\"", i+1)),
+			Style:          template.HTMLAttr(fmt.Sprintf("style=\"grid-column-start:tick %d\"", i+1)),
 			Title:          title,
 		}
 	}

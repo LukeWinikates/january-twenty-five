@@ -1,13 +1,41 @@
+body {
+    font-size: 18px;
+}
+
 .schedule-box {
     border: 1px solid black;
     display: grid;
-    grid-template-columns: repeat(48, 1fr);
+    grid-template-columns: [labels] 72px repeat(48, [tick] 1fr);
+    grid-template-rows: 24px;
     grid-gap: 2px;
 }
 
-.schedule-box .device {
-    border: 1px dotted black;
-    text-align:center;
+
+.label {
+    background-color: mediumslateblue;
+    text-align: center;
+}
+
+.line {
+    background-color: mediumslateblue;
+}
+
+
+.chamfer {
+    clip-path: polygon(
+      5px 0%,
+      calc(100% - 5px) 0%,
+      100% 5px,
+      100% calc(100% - 5px),
+      calc(100% - 5px) 100%,
+      5px 100%,
+      0% calc(100% - 5px),
+      0% 5px);
+}
+
+.schedule {
+    background-color: mediumslateblue;
+    text-align: center;
 }
 
 .header {
@@ -25,7 +53,12 @@
     text-align:center;
 }
 
-.blue {
-    background-color: lightblue;
+#panel {
+    height: 200px;
+    border: darkslateblue;
+    transition: height .3s ease-out;
 }
 
+#panel.hidden {
+    height: 0;
+}

@@ -1,14 +1,19 @@
 <html lang="en-US">
+<!DOCTYPE html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width"/>
     <title>Housesitter for Zigbee2MQTT</title>
     <link href="/public/main.css" rel="stylesheet">
     <script>
-      function openpanel() {
+      function openpanel(id) {
         const panel = document.querySelector("#panel");
         panel.classList.toggle("hidden")
-        // panel.scrollIntoView()
+        panel.querySelector(`#schedule-${id}`).scrollIntoView()
+      }
+
+      function submit() {
+        console.log(arguments)
       }
     </script>
 </head>
@@ -33,7 +38,7 @@
                 {{ .FriendlyName }}
             </div>
             {{ range .Schedules}}
-                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel()">
+                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel({{.ID}})">
                     {{ .Title }}
                 </div>
             {{ end }}
@@ -41,8 +46,19 @@
     </article>
 </section>
 <article id="panel" class="hidden">
-    <em>stuff here!</em>
-    put here a list of all the schedules, and you can page through it and edit them.
+    {{ range .Devices }}
+        {{ $name := .FriendlyName }}
+        {{ range .Schedules}}
+            <article id="schedule-{{.ID}}">
+                <form onsubmit="submit()">
+
+                </form>
+                <h3>{{ $name }}</h3>
+                {{ .Title }}
+                <button>foo</button>
+            </article>
+        {{ end }}
+    {{ end }}
 </article>
 </body>
 </html>

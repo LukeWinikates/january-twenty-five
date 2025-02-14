@@ -11,6 +11,11 @@ func LoadDevices() []*Device {
 					OnTime:  8 * Hour,
 					OffTime: 5*Hour + PM,
 				},
+				{
+					ID:      "3265D1FD-4FE5-4662-8AFE-C966089BCCB0",
+					OnTime:  8*Hour + PM,
+					OffTime: 10*Hour + 30*Minute + PM,
+				},
 			},
 		}, {
 			FriendlyName: "Two",

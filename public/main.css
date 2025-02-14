@@ -67,7 +67,6 @@ header {
 }
 
 #panel {
-  height: 24px;
   border: 1px darkslateblue;
   transition: height .3s ease-out;
   overflow: hidden;

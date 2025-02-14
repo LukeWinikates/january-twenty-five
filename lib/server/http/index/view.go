@@ -10,6 +10,7 @@ type Schedule struct {
 	OnTime  schedule.SecondsInDay
 	OffTime schedule.SecondsInDay
 	Row     int
+	ID      string
 }
 
 type GridDevice struct {
@@ -89,6 +90,7 @@ func displaySchedules(schedules []*schedule.DeviceSchedule, row int) []Schedule 
 	var result []Schedule
 	for _, deviceSchedule := range schedules {
 		result = append(result, Schedule{
+			ID:      deviceSchedule.ID,
 			OnTime:  deviceSchedule.OnTime,
 			OffTime: deviceSchedule.OffTime,
 			Row:     row,

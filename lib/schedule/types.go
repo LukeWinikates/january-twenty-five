@@ -10,6 +10,7 @@ type DeviceSchedule struct {
 	OffTime    SecondsInDay
 	Brightness uint8
 	ID         string
+	Color      string
 }
 
 type Device struct {
@@ -18,22 +19,37 @@ type Device struct {
 	ID           string
 }
 
-const Second = 1
+const Second SecondsInDay = 1
 const Minute = 60 * Second
 const Hour = 60 * Minute
 const PM = 12 * Hour
 
 type SecondsInDay int
 
-func (s SecondsInDay) HumanReadble() string {
-	ampm := "am"
+func TimeOfDay(hour, minute, ampm SecondsInDay) SecondsInDay {
+	return hour*Hour + minute*Minute + ampm
+}
+
+func (s SecondsInDay) HumanReadable() string {
+	return fmt.Sprintf("%d:%02d %s", s.Hour(), s.Minute(), s.AMPM())
+}
+
+func (s SecondsInDay) Hour() int {
+	return int(s/Hour) % 12
+}
+func (s SecondsInDay) Minute() int {
+	return int(s % Hour / Minute)
+}
+
+func (s SecondsInDay) HTMLValue() string {
+	return fmt.Sprintf("%02d:%02d", s/Hour, s.Minute())
+}
+
+func (s SecondsInDay) AMPM() string {
 	if s > PM {
-		s -= PM
-		ampm = "pm"
+		return "pm"
 	}
-	hour := s / Hour
-	minute := s % Hour
-	return fmt.Sprintf("%02d:%02d %s", hour, minute, ampm)
+	return "am"
 }
 
 func ToFriendlyTime(seconds SecondsInDay) string {

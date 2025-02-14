@@ -12,8 +12,9 @@
         panel.querySelector(`#schedule-${id}`).scrollIntoView()
       }
 
-      function submit() {
-        console.log(arguments)
+      function submit(self) {
+        console.log(self)
+        return false
       }
     </script>
 </head>
@@ -49,13 +50,30 @@
     {{ range .Devices }}
         {{ $name := .FriendlyName }}
         {{ range .Schedules}}
-            <article id="schedule-{{.ID}}">
-                <form onsubmit="submit()">
-
-                </form>
+            <article id="schedule-{{.ID}}" class="card">
                 <h3>{{ $name }}</h3>
-                {{ .Title }}
-                <button>foo</button>
+                <form onsubmit="submit(this)">
+                    <label>On Time
+                        <input type="time" step="60" value="{{.OnTime.HTMLValue}}">
+{{/*                        <input type="number" min="1" max="12" value="{{.OnTime.Hour}}">*/}}
+{{/*                        <input type="number" min="0" max="60" value="{{.OnTime.Minute}}">*/}}
+{{/*                        <input value="{{.OnTime.AMPM}}">*/}}
+                    </label>
+                    <label>Off Time
+                        <input type="time" step="60" value="{{.OffTime.HTMLValue}}">
+{{/*                        <input type="number" min="1" max="12" value="{{.OffTime.Hour}}">*/}}
+{{/*                        <input type="number" min="0" max="60" value="{{.OffTime.Minute}}">*/}}
+{{/*                        AM <input type="range" min="0" max="1" style="width:25px"> PM*/}}
+                    </label>
+                    <label>Brightness
+                        <input type="range" min="0" max="100" value="{{.Brightness}}"/>
+                    </label>
+                    <label>
+                        Color
+                        <input type="color" value="{{.Color}}"/>
+                    </label>
+                    <button type="submit">Update</button>
+                </form>
             </article>
         {{ end }}
     {{ end }}

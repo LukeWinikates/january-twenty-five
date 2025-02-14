@@ -15,6 +15,12 @@ header {
   padding: 4px;
 }
 
+.card {
+  background-color: bisque;
+  padding: 4px;
+  margin: 4px;
+}
+
 .schedule-box {
   border: 1px solid black;
   display: grid;
@@ -74,4 +80,8 @@ header {
 
 #panel.hidden {
   height: 0;
+}
+
+label {
+  display: block;
 }

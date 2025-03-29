@@ -33,12 +33,17 @@ func TimeOfDay(hour, minute, ampm SecondsInDay) SecondsInDay {
 }
 
 func (s SecondsInDay) HumanReadable() string {
-	return fmt.Sprintf("%d:%02d %s", s.Hour(), s.Minute(), s.AMPM())
+	return fmt.Sprintf("%2d:%02d %s", s.Hour(), s.Minute(), s.AMPM())
 }
 
 func (s SecondsInDay) Hour() int {
-	return int(s/Hour) % 12
+	hour := int(s/Hour) % 12
+	if hour == 0 {
+		return 12
+	}
+	return hour
 }
+
 func (s SecondsInDay) Minute() int {
 	return int(s % Hour / Minute)
 }
@@ -48,7 +53,7 @@ func (s SecondsInDay) HTMLValue() string {
 }
 
 func (s SecondsInDay) AMPM() string {
-	if s > PM {
+	if s >= PM {
 		return "pm"
 	}
 	return "am"

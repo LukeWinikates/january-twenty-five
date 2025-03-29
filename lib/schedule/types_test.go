@@ -12,4 +12,11 @@ func TestName(t *testing.T) {
 		fmt.Println(time.HumanReadable())
 		t.Fail()
 	}
+
+	time = 12*Hour + PM
+
+	if time.HumanReadable() != "12:00 pm" {
+		fmt.Println(time.HumanReadable())
+		t.Fail()
+	}
 }

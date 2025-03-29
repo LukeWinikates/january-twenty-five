@@ -1,11 +1,18 @@
 package http
 
 import (
+	"LukeWinikates/january-twenty-five/lib/schedule"
+	"LukeWinikates/january-twenty-five/lib/server/http/api"
 	"context"
 	"html/template"
 	"net/http"
 	"os"
 )
+
+// cool idea - a router object passed in to all the templates
+//const ROUTES
+
+const PUT_SCHEDULES_ROUTE_PATTERN = "PUT /api/schedules/{schedule_id}"
 
 var homepageTemplate *template.Template
 
@@ -34,7 +41,9 @@ func (s *realServer) Serve(addr string) error {
 	mux := http.NewServeMux()
 	fs := os.DirFS("./public")
 	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.FS(fs))))
-	mux.HandleFunc("/", indexPage())
+	scheduleStore := schedule.NewStore()
+	mux.HandleFunc("/", indexPage(scheduleStore))
+	mux.HandleFunc(PUT_SCHEDULES_ROUTE_PATTERN, api.SchedulePutHandler(scheduleStore))
 	server := &http.Server{Addr: addr, Handler: mux}
 	s.server = server
 	return server.ListenAndServe()

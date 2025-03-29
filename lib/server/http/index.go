@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func indexPage() func(writer http.ResponseWriter, request *http.Request) {
+func indexPage(store schedule.Store) func(writer http.ResponseWriter, request *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "text/html")
-		deviceList := schedule.LoadDevices()
+		deviceList := store.All()
 		viewModel := index.Grid(deviceList)
 		err := homepageTemplate.Execute(writer, viewModel)
 		if err != nil {

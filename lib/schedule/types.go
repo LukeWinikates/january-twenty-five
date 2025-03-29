@@ -5,12 +5,14 @@ import (
 	"time"
 )
 
+type HexColor = string
+
 type DeviceSchedule struct {
 	OnTime     SecondsInDay
 	OffTime    SecondsInDay
 	Brightness uint8
 	ID         string
-	Color      string
+	Color      HexColor
 }
 
 type Device struct {

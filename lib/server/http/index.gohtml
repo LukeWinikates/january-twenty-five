@@ -9,12 +9,22 @@
       function openpanel(id) {
         const panel = document.querySelector("#panel");
         panel.classList.toggle("hidden")
-        panel.querySelector(`#schedule-${id}`).scrollIntoView()
+        panel.querySelector(`#schedule-${id}`).scrollIntoView();
       }
 
-      function foo(self) {
-        console.log(self)
-        return false
+      function updateSchedule(form, event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const newScheduleValues = Object.fromEntries(formData)
+        const url = `/api/schedules/${newScheduleValues.id}`
+
+        fetch(url, {
+          method: "PUT",
+          body: JSON.stringify(newScheduleValues)
+        }).then(() => {
+          location.reload()
+          // reload?
+        })
       }
     </script>
 </head>
@@ -52,19 +62,20 @@
         {{ range .Schedules}}
             <article id="schedule-{{.ID}}" class="card">
                 <h3>{{ $name }}</h3>
-                <form onsubmit="foo(this)">
+                <form onsubmit="updateSchedule(this, event)">
+                    <input type="hidden" name="id" value="{{.ID}}">
                     <label>On Time
-                        <input type="time" step="60" value="{{.OnTime.HTMLValue}}">
+                        <input type="time" name="ontime" step="60" value="{{.OnTime.HTMLValue}}">
                     </label>
                     <label>Off Time
-                        <input type="time" step="60" value="{{.OffTime.HTMLValue}}">
+                        <input type="time" step="60" name="offtime" value="{{.OffTime.HTMLValue}}">
                     </label>
                     <label>Brightness
-                        <input type="range" min="0" max="100" value="{{.Brightness}}"/>
+                        <input type="range" min="0" max="100" name="brightness" value="{{.Brightness}}"/>
                     </label>
                     <label>
                         Color
-                        <input type="color" value="{{.Color}}"/>
+                        <input type="color" name="color" value="{{.Color}}"/>
                     </label>
                     <button type="submit">Update</button>
                 </form>

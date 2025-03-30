@@ -32,7 +32,20 @@ func main() {
 func createServer() (server.Server, error) {
 	//client := zigbee2mqtt.NewClient(os.Getenv("MQTT_HOST"))
 	client := zigbee2mqtt.NoOpClient()
-	dataPath := os.Getenv("DATA_PATH")
-	s, err := server.New(client, dataPath)
+	options := createServerOptions()
+	s, err := server.New(client, options)
 	return s, err
+}
+
+func createServerOptions() server.Options {
+	dataPath := os.Getenv("DATA_PATH")
+	hostname := os.Getenv("HOUSESITTER_HOST")
+	if hostname == "" {
+		hostname = ":8998"
+	}
+	options := server.Options{
+		DataDir:  dataPath,
+		Hostname: hostname,
+	}
+	return options
 }

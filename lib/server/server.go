@@ -15,7 +15,7 @@ type Server interface {
 type realServer struct {
 	ztmClient  zigbee2mqtt.Client
 	httpServer http.Server
-	dataDir    string
+	options    Options
 }
 
 func (r *realServer) Start() error {
@@ -24,7 +24,7 @@ func (r *realServer) Start() error {
 			fmt.Println(device.FriendlyName)
 		}
 	})
-	return r.httpServer.Serve("localhost:8998")
+	return r.httpServer.Serve(r.options.Hostname)
 	// start device listener
 }
 
@@ -32,10 +32,15 @@ func (r *realServer) Stop() error {
 	return nil
 }
 
-func New(client zigbee2mqtt.Client, dataDir string) (Server, error) {
+type Options struct {
+	DataDir  string
+	Hostname string
+}
+
+func New(client zigbee2mqtt.Client, opts Options) (Server, error) {
 	return &realServer{
 		ztmClient:  client,
-		dataDir:    dataDir,
+		options:    opts,
 		httpServer: http.NewServer(),
 	}, nil
 }

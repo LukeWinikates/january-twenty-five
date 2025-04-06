@@ -64,32 +64,32 @@
         {{ end }}
     </article>
 </section>
-<article id="panel" class="hidden">
-    {{ range .Devices }}
-        {{ $name := .FriendlyName }}
-        {{ range .Schedules}}
-            <article id="schedule-{{.ID}}" class="card">
-                <h3>{{ $name }}</h3>
-                <form onsubmit="updateSchedule(this, event)">
-                    <input type="hidden" name="id" value="{{.ID}}">
-                    <label>On Time
-                        <input type="time" name="ontime" step="60" value="{{.OnTime.HTMLValue}}">
-                    </label>
-                    <label>Off Time
-                        <input type="time" step="60" name="offtime" value="{{.OffTime.HTMLValue}}">
-                    </label>
-                    <label>Brightness
-                        <input type="range" min="0" max="100" value="{{.Brightness}}" list="markers"/>
-                    </label>
-                    <label>
-                        Color
-                        <input type="color" name="color" value="{{.Color}}"/>
-                    </label>
-                    <button type="submit">Update</button>
-                </form>
-            </article>
-        {{ end }}
-    {{ end }}
-</article>
+{{/*<article id="panel" class="hidden">*/}}
+{{/*    {{ range .Devices }}*/}}
+{{/*        {{ $name := .FriendlyName }}*/}}
+{{/*        {{ range .Schedules}}*/}}
+{{/*            <article id="schedule-{{.ID}}" class="card">*/}}
+{{/*                <h3>{{ $name }}</h3>*/}}
+{{/*                <form onsubmit="updateSchedule(this, event)">*/}}
+{{/*                    <input type="hidden" name="id" value="{{.ID}}">*/}}
+{{/*                    <label>On Time*/}}
+{{/*                        <input type="time" name="ontime" step="60" value="{{.OnTime.HTMLValue}}">*/}}
+{{/*                    </label>*/}}
+{{/*                    <label>Off Time*/}}
+{{/*                        <input type="time" step="60" name="offtime" value="{{.OffTime.HTMLValue}}">*/}}
+{{/*                    </label>*/}}
+{{/*                    <label>Brightness*/}}
+{{/*                        <input type="range" min="0" max="100" value="{{.Brightness}}" list="markers"/>*/}}
+{{/*                    </label>*/}}
+{{/*                    <label>*/}}
+{{/*                        Color*/}}
+{{/*                        <input type="color" name="color" value="{{.Color}}"/>*/}}
+{{/*                    </label>*/}}
+{{/*                    <button type="submit">Update</button>*/}}
+{{/*                </form>*/}}
+{{/*            </article>*/}}
+{{/*        {{ end }}*/}}
+{{/*    {{ end }}*/}}
+{{/*</article>*/}}
 </body>
 </html>

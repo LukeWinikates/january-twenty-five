@@ -70,7 +70,7 @@ func NewStore() Store {
 					{
 						Device:     nightstand,
 						Brightness: 100,
-						Color:      "33b73c",
+						Color:      "#33b73c",
 					},
 				},
 			}, {
@@ -82,7 +82,7 @@ func NewStore() Store {
 					{
 						Device:     playroomLight,
 						Brightness: 100,
-						Color:      "33b73c",
+						Color:      "#33b73c",
 					},
 				},
 			},
@@ -101,7 +101,7 @@ func NewStore() Store {
 					{
 						Device:     deskLamp2,
 						Brightness: 75,
-						Color:      "f60080",
+						Color:      "#f60080",
 					},
 				},
 			},

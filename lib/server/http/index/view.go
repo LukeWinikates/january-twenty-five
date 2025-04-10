@@ -7,11 +7,12 @@ import (
 )
 
 type GridSchedule struct {
-	OnTime  schedule.SecondsInDay
-	OffTime schedule.SecondsInDay
-	Devices []GridDeviceSettings
-	Row     int
-	ID      string
+	OnTime       schedule.SecondsInDay
+	OffTime      schedule.SecondsInDay
+	FriendlyName string
+	Devices      []GridDeviceSettings
+	Row          int
+	ID           string
 }
 
 type GridDeviceSettings struct {
@@ -28,7 +29,7 @@ type GridDeviceSettings struct {
 //}
 
 func (s GridSchedule) Title() string {
-	return fmt.Sprintf("%s - %s", s.OnTime.HumanReadable(), s.OffTime.HumanReadable())
+	return fmt.Sprintf("%s - %s, %v devices", s.OnTime.HumanReadable(), s.OffTime.HumanReadable(), len(s.Devices))
 }
 
 func (s GridSchedule) InlineStyles() template.HTMLAttr {
@@ -98,11 +99,12 @@ func displaySchedules(schedules []*schedule.Schedule) []GridSchedule {
 	var result []GridSchedule
 	for i, s := range schedules {
 		result = append(result, GridSchedule{
-			ID:      s.ID,
-			OnTime:  s.OnTime,
-			OffTime: s.OffTime,
-			Row:     i,
-			Devices: displayDevices(s.DeviceSettings),
+			ID:           s.ID,
+			OnTime:       s.OnTime,
+			OffTime:      s.OffTime,
+			FriendlyName: s.FriendlyName,
+			Row:          i + 1,
+			Devices:      displayDevices(s.DeviceSettings),
 		})
 	}
 	return result

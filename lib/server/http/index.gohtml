@@ -50,46 +50,68 @@
                 {{ .Title }}
             </div>
         {{ end }}
-        {{ range .Devices }}
-            <div class="label chamfer"
+        {{ range .Schedules }}
+            {{/*            TODO: little icons for light colors*/}}
+            <div class="label chamfer" onclick="openpanel({{.ID}})"
                     {{ .InlineStyles }}
             >
-                {{ .FriendlyName }}
+                {{ .Title }}
             </div>
-            {{ range .Schedules}}
-                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel({{.ID}})">
-                    {{ .Title }}
-                </div>
-            {{ end }}
+            {{/*            {{ range .Schedules}}*/}}
+            {{/*                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel({{.ID}})">*/}}
+            {{/*                    {{ .Title }}*/}}
+            {{/*                </div>*/}}
+            {{/*            {{ end }}*/}}
         {{ end }}
     </article>
 </section>
-{{/*<article id="panel" class="hidden">*/}}
-{{/*    {{ range .Devices }}*/}}
-{{/*        {{ $name := .FriendlyName }}*/}}
-{{/*        {{ range .Schedules}}*/}}
-{{/*            <article id="schedule-{{.ID}}" class="card">*/}}
-{{/*                <h3>{{ $name }}</h3>*/}}
-{{/*                <form onsubmit="updateSchedule(this, event)">*/}}
-{{/*                    <input type="hidden" name="id" value="{{.ID}}">*/}}
-{{/*                    <label>On Time*/}}
-{{/*                        <input type="time" name="ontime" step="60" value="{{.OnTime.HTMLValue}}">*/}}
-{{/*                    </label>*/}}
-{{/*                    <label>Off Time*/}}
-{{/*                        <input type="time" step="60" name="offtime" value="{{.OffTime.HTMLValue}}">*/}}
-{{/*                    </label>*/}}
-{{/*                    <label>Brightness*/}}
-{{/*                        <input type="range" min="0" max="100" value="{{.Brightness}}" list="markers"/>*/}}
-{{/*                    </label>*/}}
-{{/*                    <label>*/}}
-{{/*                        Color*/}}
-{{/*                        <input type="color" name="color" value="{{.Color}}"/>*/}}
-{{/*                    </label>*/}}
-{{/*                    <button type="submit">Update</button>*/}}
-{{/*                </form>*/}}
-{{/*            </article>*/}}
-{{/*        {{ end }}*/}}
-{{/*    {{ end }}*/}}
-{{/*</article>*/}}
+<article id="panel" class="hidden">
+    {{ range .Schedules }}
+    <article class="card">
+        <h2>{{.Title}}</h2>
+        <form onsubmit="updateSchedule(this, event)">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <label>On Time
+                <input type="time" name="ontime" step="60" value="{{.OnTime.HTMLValue}}">
+            </label>
+            <label>Off Time
+                <input type="time" step="60" name="offtime" value="{{.OffTime.HTMLValue}}">
+            </label>
+            <button type="submit">Update</button>
+        </form>
+        {{ range .Devices}}
+            <article id="schedule-{{.ID}}">
+                <h3>{{.FriendlyName}}</h3>
+                <form onsubmit="updateDevice(this, event)">
+                    <input type="hidden" name="id" value="{{.ID}}">
+                    <label>Brightness
+                        <input type="range" min="0" max="100" value="{{.Brightness}}" list="markers"/>
+                    </label>
+                    <label>
+                        Color
+                        <input type="color" name="color" value="{{.Color}}"/>
+                    </label>
+                    <button type="submit">Update</button>
+                </form>
+            </article>
+        {{ end }}
+        <article id="schedule-new">
+            <h3>
+                Add a Device
+            </h3>
+            <form onsubmit="addDevice(this, event)">
+                <label>Brightness
+                    <input type="range" min="0" max="100" value="75" list="markers"/>
+                </label>
+                <label>
+                    Color
+                    <input type="color" name="color" value="#00000"/>
+                </label>
+                <button type="submit">Add</button>
+            </form>
+        </article>
+        {{ end }}
+    </article>
+</article>
 </body>
 </html>

@@ -30,7 +30,7 @@ header h1 {
 .schedule-box {
   border: 1px solid black;
   display: grid;
-  grid-template-columns: [labels] 72px repeat(48, [tick] 1fr);
+  grid-template-columns: [labels] 124px repeat(48, [tick] 1fr);
   grid-template-rows: 24px;
   grid-gap: 2px;
 }

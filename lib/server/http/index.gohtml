@@ -51,11 +51,14 @@
             </div>
         {{ end }}
         {{ range .Schedules }}
+            <div style="grid-row-start:calc({{.Row }} + 1)">
+                {{.Title}}
+            </div>
             {{/*            TODO: little icons for light colors*/}}
             <div class="label chamfer" onclick="openpanel({{.ID}})"
                     {{ .InlineStyles }}
             >
-                {{ .Title }}
+                {{ .FormattedTime }}
             </div>
             {{/*            {{ range .Schedules}}*/}}
             {{/*                <div {{.InlineStyles }} class="schedule chamfer" onclick="openpanel({{.ID}})">*/}}

@@ -29,7 +29,11 @@ type GridDeviceSettings struct {
 //}
 
 func (s GridSchedule) Title() string {
-	return fmt.Sprintf("%s - %s, %v devices", s.OnTime.HumanReadable(), s.OffTime.HumanReadable(), len(s.Devices))
+	return fmt.Sprintf("%s (%v)", s.FriendlyName, len(s.Devices))
+}
+
+func (s GridSchedule) FormattedTime() string {
+	return fmt.Sprintf("%s - %s", s.OnTime.HumanReadable(), s.OffTime.HumanReadable())
 }
 
 func (s GridSchedule) InlineStyles() template.HTMLAttr {
